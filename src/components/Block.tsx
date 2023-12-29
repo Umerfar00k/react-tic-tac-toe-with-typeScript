@@ -4,7 +4,7 @@ export const Block = () => {
   const [block, setBlock] = useState(Array(9).fill(null));
   const [currentTurn, setCurrentTurn] = useState('X');
 
-  const checkWinner = () => {
+  const checkWinner = (block: null[]) => {
     const win = [
       [0, 1, 2],
       [3, 4, 5],
@@ -17,7 +17,8 @@ export const Block = () => {
     ];
     for (let i = 0; i < win.length; i++) {
       const [a, b, c] = win[i];
-      if (block[a] !== null && block[b] && block[b] === block[c]) return true;
+      if (block[a] !== null && block[a] === block[b] && block[b] === block[c])
+        return true;
     }
     return false;
   };
@@ -26,15 +27,16 @@ export const Block = () => {
     const blockCopy = Array.from(block);
 
     if (blockCopy[index] !== null) return;
-
     blockCopy[index] = currentTurn;
-    setCurrentTurn(currentTurn === 'X' ? 'O' : 'X');
-    setBlock(blockCopy);
 
-    const win = checkWinner();
+    const win = checkWinner(blockCopy);
     if (win) {
       alert(`${currentTurn} won the game`);
+      window.location.reload();
     }
+
+    setCurrentTurn(currentTurn === 'X' ? 'O' : 'X');
+    setBlock(blockCopy);
   };
 
   return (
